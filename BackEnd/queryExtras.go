@@ -51,7 +51,7 @@ func QueryExtras() [][]string {
 					}
 				}
 			}
-			//TC Which item
+			//TC Which items
 			quantity := getQuantity(thisItem[0])
 
 			thisItem[2] = quantity
