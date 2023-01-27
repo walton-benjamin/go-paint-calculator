@@ -15,7 +15,6 @@ func DecidePaint() []string {
 		thisPaintColourDisplay := pagifyPaintColour(paintColour, maxLengthColourName)
 		fmt.Printf("Colour : %s  ; Price per litre £%.2f\n", thisPaintColourDisplay, (PaintData[2] / PaintData[0]))
 	}
-	//fmt.Println(paints)
 	//assume paint is not correct
 	paintSelected, customColour := "nul", ""
 	var pOut []string
@@ -24,7 +23,6 @@ func DecidePaint() []string {
 		//attempt to pick a paint
 		pOut = pickPaint(paints)
 		paintSelected, customColour = pOut[0], pOut[1]
-		//	fmt.Printf(" %s, %s \n", paintSelected, customColour)
 	}
 
 	return []string{paintSelected, customColour}

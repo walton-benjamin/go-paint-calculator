@@ -19,7 +19,6 @@ func main() {
 	fmt.Printf("\nWelcome to the Wall Painting Calculator \n\n")
 	//run first room
 	runProgram()
-	//fmt.Println(b.QueryExtras())
 
 	//does the user want to add a second room?
 
@@ -35,9 +34,6 @@ func runProgram() {
 	}
 
 	wallAreasToPaint := wallAreaTotal(roomWalls)
-
-	//fmt.Println(wallAreasToPaint)
-
 	fmt.Printf("\nTotal : %.2f m^2 of Wall to paint.\n \n \n", wallAreasToPaint)
 
 	//decide on the type of paint.
@@ -166,7 +162,6 @@ func printReceipt(roomWalls []float64, roomDimensions [][]float64, chosenPaint s
 		fmt.Println(customPaintReceiptString_custom)
 	} else {
 		customPaintReceiptString := fmt.Sprintf("|   Paint Colour Selected: %s ", chosenPaint)
-		//customPaintReceiptString = pagifyString(customPaintReceiptString, 59)
 		fmt.Println(pagifyString(customPaintReceiptString))
 	}
 	fmt.Printf("|                                                          |\n")
@@ -195,7 +190,6 @@ func printReceipt(roomWalls []float64, roomDimensions [][]float64, chosenPaint s
 	//product, quantity, price per
 	if len(extras) != 0 {
 		for _, thisSlice := range extras {
-			//fmt.Println(thisSlice)
 			fmt.Println(pagifyString(fmt.Sprintf("|   %s x %s        ", thisSlice[1], thisSlice[0])))
 			thisItemCost, _ := strconv.ParseFloat(thisSlice[2], 64)
 			thisQuantity, _ := strconv.ParseFloat(thisSlice[1], 64)
@@ -203,7 +197,6 @@ func printReceipt(roomWalls []float64, roomDimensions [][]float64, chosenPaint s
 			fmt.Println(pagifyString(fmt.Sprintf("|       %.0f * %.2f ", thisItemCost, thisQuantity)))
 			fmt.Println(pagifyStringRight(fmt.Sprintf("  = £ %.2f   ", thisTotal)))
 			subTotal += thisTotal
-			//fmt.Printf("|                                                          |\n")
 		}
 	} else {
 		fmt.Printf("|   	None                                               |\n")

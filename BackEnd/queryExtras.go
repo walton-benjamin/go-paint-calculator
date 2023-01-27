@@ -22,13 +22,13 @@ func QueryExtras() [][]string {
 		fmt.Println("Error loading extras, returning with none ordered")
 		return [][]string{{}}
 	}
+
 	//while, the user wants to order more items
 	moreOrders := true
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for moreOrders {
 		fmt.Printf("\nWould you like to add any additional items to your order? [Y/N] :")
-		//thisItem := []string{}
 
 		//get their decision to order more or not
 		scanner.Scan()
@@ -63,24 +63,21 @@ func QueryExtras() [][]string {
 				} else if strings.Contains(itemInString, "#") {
 
 					//if they are using #x notation correctly...
-					//fmt.Printf("Inspecting item number %s\n", itemInString[1:])
-					//in : #2
+					//in : #12
 					inString, err := strconv.ParseInt(itemInString[1:], 10, 64)
-					//fmt.Println(inString)
-					//out : 2
+					//out : 12
 
 					if err == nil {
 						//int accepted
 						thisItem := extras[(inString - 1)]
-						//fmt.Printf("Selected Item '%s'\n", thisItem[0])
 						validExtraName = true
 
 						quantity := getQuantity(thisItem[0])
-						//fmt.Printf("TEST : %f quantity received\n", quantity)
+
 						if quantity != 0.0 {
-							//fmt.Printf("TEST : recognised not being 0 quantity \n")
 							thisItem = append(thisItem, fmt.Sprintf("%.0f", quantity))
 							extrasOrdered = append(extrasOrdered, thisItem)
+
 						} else {
 							fmt.Printf("Quantity '0' entered, item not added to order\n")
 						}
@@ -93,19 +90,21 @@ func QueryExtras() [][]string {
 					//if they are (potentially) entering the full name...
 					//loop over possible items
 					for _, item := range extras {
-						//fmt.Println(i, item)
+
 						//check if the item name, and input are identical
 						if strings.EqualFold(itemInString, item[0]) {
+
 							//if so, set the item being ordered to this item, tell the user, set flag
 							thisItem := item
 							fmt.Printf("Selected %s\n", thisItem[0])
 							validExtraName = true
 							quantity := getQuantity(thisItem[0])
-							//fmt.Printf("TEST : %f quantity received\n", quantity)
+
 							if quantity != 0.0 {
-								//fmt.Printf("TEST : recognised not being 0 quantity \n")
+								//append the result of getQuantity
 								thisItem = append(thisItem, fmt.Sprintf("%.0f", quantity))
 								extrasOrdered = append(extrasOrdered, thisItem)
+
 							} else {
 								fmt.Printf("Quantity '0' entered. Item not added to order\n")
 							}
@@ -118,16 +117,6 @@ func QueryExtras() [][]string {
 
 				}
 			}
-			//item found, thisItem[0]&[1] are filled with the selected item info.
-			//now get the quantity to order with getQuantity(item)
-
-			//append the result of getQuantity
-
-			/*
-				thisItem = append(thisItem, fmt.Sprintf("%.0f", getQuantity(thisItem[0])))
-				extrasOrdered = append(extrasOrdered, thisItem)
-				moreOrders = true
-			*/
 
 			//if the user does not want to order other items
 		} else if strings.ToUpper(textIn) == "N" || strings.ToUpper(textIn) == "NO" {
