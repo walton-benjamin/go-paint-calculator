@@ -11,7 +11,6 @@ import (
 
 /*
 TODO:
-prints an automated invoice/receipt.
 accept multiple rooms, add all to receipts
 */
 
