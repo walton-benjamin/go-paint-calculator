@@ -27,15 +27,7 @@ func main() {
 
 func runProgram() {
 
-	//get the number of walls to paint
 	//get the total surface area of wall to be painted
-
-	//fmt.Printf("Please enter a name for this room : ")
-	/*
-		scanner = bufio.NewScanner(os.stdin)
-		scanner.Scan()
-		input := scanner.Text()
-	*/
 	var roomWalls = []float64{0.0}
 	var roomDimensions [][]float64
 	for roomWalls[0] == 0.0 {
