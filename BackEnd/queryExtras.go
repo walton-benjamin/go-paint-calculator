@@ -10,7 +10,7 @@ import (
 
 func QueryExtras() [][]string {
 
-	fmt.Printf("\n\n Would you like any extras added to your order? \n   Items in stock : \n")
+	fmt.Printf("\n\n Would you like any extras added to your order? \n\n  Items in stock : \n")
 	extrasOrdered := [][]string{}
 	extras := GetExtras()
 	//displaying items available
@@ -38,6 +38,7 @@ func QueryExtras() [][]string {
 		if strings.ToUpper(textIn) == "Y" || strings.ToUpper(textIn) == "YES" {
 			//if they want to order more items, query the item
 			fmt.Println("\nPlease enter the full name of the item as it appears, or '#' Hashtag, and then the number in the list")
+			fmt.Println("If you would like to see the items again, enter 'i', or 'items'.")
 			fmt.Println("If this was a mistake, type 'x', 'c' or 'cancel'.")
 
 			//loop until a valid extra item name is entered
@@ -53,16 +54,16 @@ func QueryExtras() [][]string {
 				if strings.Contains(itemInString, "#") {
 
 					//if they are using #x notation correctly...
-					fmt.Printf("Inspecting item number %s\n", itemInString[1:])
+					//fmt.Printf("Inspecting item number %s\n", itemInString[1:])
 					//in : #2
 					inString, err := strconv.ParseInt(itemInString[1:], 10, 64)
-					fmt.Println(inString)
+					//fmt.Println(inString)
 					//out : 2
 
 					if err == nil {
 						//int accepted
 						thisItem = extras[(inString - 1)]
-						fmt.Printf("Selected Item '%s' Successsfully \n", thisItem[0])
+						fmt.Printf("Selected Item '%s'\n", thisItem[0])
 						validExtraName = true
 					} else {
 						fmt.Println("An error occurred. Attempt to recognise #x notation failed. Try again")
@@ -71,8 +72,8 @@ func QueryExtras() [][]string {
 
 					//if they are (potentially) entering the full name...
 					//loop over possible items
-					for i, item := range extras {
-						fmt.Println(i, item)
+					for _, item := range extras {
+						//fmt.Println(i, item)
 						//check if the item name, and input are identical
 						if strings.EqualFold(itemInString, item[0]) {
 							//if so, set the item being ordered to this item, tell the user, set flag
@@ -89,8 +90,6 @@ func QueryExtras() [][]string {
 			//item found, thisItem[0]&[1] are filled with the selected item info.
 			//now get the quantity to order with getQuantity(item)
 
-			//var thisQuant []string = []string{fmt.Sprintf("%f")}
-			fmt.Println(thisItem, thisItem[0])
 			//append the result of getQuantity
 			thisItem = append(thisItem, fmt.Sprintf("%.0f", getQuantity(thisItem[0])))
 			extrasOrdered = append(extrasOrdered, thisItem)
@@ -136,7 +135,7 @@ func getQuantity(thisItemName string) float64 {
 	scanner := bufio.NewScanner(os.Stdin)
 	var numberToOrder float64
 	for !validInput {
-		fmt.Printf("How many '%ss' would you like to order? : ", thisItemName)
+		fmt.Printf("\n How many '%ss' would you like to order? : ", thisItemName)
 		scanner.Scan()
 		inString := scanner.Text()
 		numberOrdered, err := strconv.ParseFloat(inString, 64)
