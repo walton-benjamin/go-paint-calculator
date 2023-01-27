@@ -54,12 +54,17 @@ func QueryExtras() [][]string {
 
 					//if they are using #x notation correctly...
 					fmt.Printf("Inspecting item number %s\n", itemInString[1:])
-					inString := strings.Replace(itemInString, "#", "", len(itemInString))
-					inputItemNumber, err := strconv.ParseInt(inString, 10, 64)
-					if err != nil {
+					//#2
+					//inString := fmt.Sprintf("%s", itemInString[1:]) //, "", len(itemInString))), strings.Split(itemInString, "#
+					inString, err := strconv.ParseInt(itemInString[1:], 10, 64)
+					fmt.Println(inString, err)
+					//2
+					//inputItemNumber, err2 := strconv.ParseInt(inString, 10, 64)
+
+					if err == nil {
 						//int accepted
-						thisItem = extras[(inputItemNumber - 1)]
-						fmt.Printf("Selected %s\n", thisItem[0])
+						thisItem = extras[(inString - 1)]
+						fmt.Printf("Selected Item '%s' Successsfully \n", thisItem[0])
 						validExtraName = true
 					} else {
 						fmt.Println("An error occurred. Attempt to recognise #x notation failed. Try again")
@@ -67,8 +72,12 @@ func QueryExtras() [][]string {
 				} else {
 
 					//if they are (potentially) entering the full name...
-					for _, item := range extras {
+					//loop over possible items
+					for i, item := range extras {
+						fmt.Println(i, item)
+						//check if the item name, and input are identical
 						if strings.EqualFold(itemInString, item[0]) {
+							//if so, set the item being ordered to this item, tell the user, set flag
 							thisItem = item
 							fmt.Printf("Selected %s\n", thisItem[0])
 							validExtraName = true
@@ -79,8 +88,10 @@ func QueryExtras() [][]string {
 					}
 				}
 			}
-			thisItem[2] = fmt.Sprintf("%f", getQuantity(thisItem[0]))
-			extrasOrdered = append(extrasOrdered, thisItem)
+			//var thisQuant []string = []string{fmt.Sprintf("%f")}
+			fmt.Println(thisItem[0])
+			thisItem = append(thisItem, getQuantity(thisItem[0]))
+			extrasOrdered = append(extrasOrdered, thisQuant)
 			moreOrders = true
 
 			//if the user does not want to order other items
