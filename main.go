@@ -18,8 +18,8 @@ accept multiple rooms, add all to receipts
 func main() {
 	fmt.Printf("\nWelcome to the Wall Painting Calculator \n\n")
 	//run first room
-	//runProgram()
-	fmt.Println(b.QueryExtras())
+	runProgram()
+	//fmt.Println(b.QueryExtras())
 
 	//does the user want to add a second room?
 
@@ -198,7 +198,7 @@ func printReceipt(roomWalls []float64, chosenPaint string, customPaint string, p
 			fmt.Println(pagifyString(fmt.Sprintf("|       %.0f * %.2f ", thisQuantity, thisItemCost)))
 			fmt.Println(pagifyStringRight(fmt.Sprintf("  = £ %.2f   ", thisTotal)))
 			subTotal += thisTotal
-			fmt.Printf("|                                                          |\n")
+			//fmt.Printf("|                                                          |\n")
 		}
 	} else {
 		fmt.Printf("|   	None                                               |\n")
