@@ -101,6 +101,8 @@ func QueryExtras() [][]string {
 
 			//stop looping
 			moreOrders = false
+		} else if strings.ToUpper(textIn) == "I" || strings.ToUpper(textIn) == "Item" || strings.ToUpper(textIn) == "Items" {
+			displayExtras(extras)
 		} else {
 			//unaccepted inputs
 			fmt.Printf("Sorry, that was not recognised as 'Y' or 'N'. Try again : ")
@@ -118,6 +120,14 @@ func GetExtras() [][]string {
 		{"Paint Roller Short Handle", "4.99"},
 		{"Paint tray", "1.99"},
 		{"Overall set", "10.00"},
+	}
+}
+
+func displayExtras(extras [][]string) {
+	if len(extras) > 0 {
+		for i, thisSlice := range extras {
+			fmt.Printf(" %d. %s , £%s per item \n", i+1, thisSlice[0], thisSlice[1])
+		}
 	}
 }
 
