@@ -59,10 +59,11 @@ Created by Benjamin Walton, for GoLang programming @ TSI
 - Paints are displayed in line with eachother, despite variable length names.
     - Dynamically extends to the longest name length.
 - Error handling
-- If zero items are entered, 
+- If zero items are entered, will remove the extra from the list to be added.
 
 
 # Scope for potential additions
 - Functionality to add multiple rooms, with multiple paint colours
 - Ability to add a different colour for each wall in a given room
 - Functionality to have a variable width receipt (only need to change the hard coded spacers)
+- if multiple instances of the same extra are added, could combine them into one row in the receipt
