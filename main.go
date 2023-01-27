@@ -36,9 +36,10 @@ func runProgram() {
 		scanner.Scan()
 		input := scanner.Text()
 	*/
-	var roomWalls = []float64{0.0}
+	var roomWalls []float64
+	var roomDimensions [][]float64
 	for roomWalls[0] == 0.0 {
-		roomWalls = b.WallAreaCalculator()
+		roomWalls, roomDimensions = b.WallAreaCalculator()
 	}
 
 	wallAreasToPaint := wallAreaTotal(roomWalls)
@@ -75,7 +76,7 @@ func runProgram() {
 	//extras - [][]string of optional extras added {product, quantity, price per}
 	thisPaintMetaData := b.GetPaintsAvailable()[paint]
 
-	printReceipt(roomWalls, paint, customPaint, thisPaintMetaData, paintToOrder, extras)
+	printReceipt(roomWalls, roomDimensions, paint, customPaint, thisPaintMetaData, paintToOrder, extras)
 
 }
 func wallAreaTotal(walls []float64) float64 {
@@ -128,7 +129,7 @@ func pagifyStringRight(inputWord string) string {
 	return inputWord
 }
 
-func printReceipt(roomWalls []float64, chosenPaint string, customPaint string, paintMetaData []float64, tinsNeeded []float64, extras [][]string) {
+func printReceipt(roomWalls []float64, roomDimensions [][]float64, chosenPaint string, customPaint string, paintMetaData []float64, tinsNeeded []float64, extras [][]string) {
 	//receipt width : 60 character including borders
 	//paintMetaData {Volume in Litres, Price per tin(£), Surface Area Covered by one Tin}
 	subTotal := tinsNeeded[1]
@@ -140,10 +141,22 @@ func printReceipt(roomWalls []float64, chosenPaint string, customPaint string, p
 	fmt.Printf("|                                                          |\n")
 	fmt.Printf("|   Rooms entered:                                         |\n")
 	fmt.Printf("|                                                          |\n")
-	for i := 0; i < len(roomWalls); i++ {
-		thisWall := fmt.Sprintf("|     Wall %d : %.2fm^2 ", i+1, roomWalls[i])
-		thisWallString := pagifyString(thisWall)
-		fmt.Println(thisWallString)
+
+	//if dimensions not used
+	if len(roomDimensions) == 0 {
+		for i := 0; i < len(roomWalls); i++ {
+			thisWall := fmt.Sprintf("|     Wall %d : %.2fm^2 ", i+1, roomWalls[i])
+			thisWallString := pagifyString(thisWall)
+			fmt.Println(thisWallString)
+		}
+	} else {
+		//if wall dimensions used
+		for i := 0; i < len(roomWalls); i++ {
+			thisRoomsDimensions := roomDimensions[i]
+			thisWall := fmt.Sprintf("|     Wall %d : %.2f x %.2f = %.2fm^2 ", i+1, thisRoomsDimensions[0], thisRoomsDimensions[1], roomWalls[i])
+			thisWallString := pagifyString(thisWall)
+			fmt.Println(thisWallString)
+		}
 	}
 	fmt.Printf("|                                                          |\n")
 	totalAreaString := fmt.Sprintf("|   Total Surface Area to paint : %.2fm^2 ", wallAreaTotal(roomWalls))

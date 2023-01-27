@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func WallAreaCalculator() []float64 {
+func WallAreaCalculator() ([]float64, [][]float64) {
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Printf("An error occurred....Restarting...\n \n \n")
@@ -44,16 +44,18 @@ func WallAreaCalculator() []float64 {
 	fmt.Printf("Please enter 'S' to use Total Surface Area\n")
 	enteranceMethodSelected := false
 	var walls []float64
+	var dimensions [][]float64
 	for !enteranceMethodSelected {
 		fmt.Printf("\n Enter here : ")
 		scanner.Scan()
 		enteranceMethodIn := scanner.Text()
 		switch strings.ToLower(enteranceMethodIn) {
 		case "d":
-			walls = enterWallDimentions(numWalls)
+			walls, dimensions = enterWallDimentions(numWalls)
 			enteranceMethodSelected = true
 		case "s":
 			walls = enterWallSurfaceArea(numWalls)
+			dimensions = [][]float64{}
 			enteranceMethodSelected = true
 		case "x":
 			os.Exit(0)
@@ -61,7 +63,7 @@ func WallAreaCalculator() []float64 {
 			fmt.Printf("Invalid input, try again, or enter 'x' to cancel")
 		}
 	}
-	return walls
+	return walls, dimensions
 }
 
 func enterWallSurfaceArea(numWalls int64) []float64 {
@@ -86,9 +88,10 @@ func enterWallSurfaceArea(numWalls int64) []float64 {
 	return walls
 }
 
-func enterWallDimentions(numWalls int64) []float64 {
+func enterWallDimentions(numWalls int64) ([]float64, [][]float64) {
 	scanner := bufio.NewScanner(os.Stdin)
 	var walls []float64 // size of walls
+	var dimensions [][]float64
 
 	fmt.Printf("\nNow entering data for %d wall dimensions.... \n", numWalls)
 	fmt.Printf("Please note, we calculate surface areas for each wall entered automatically\n")
@@ -109,9 +112,10 @@ func enterWallDimentions(numWalls int64) []float64 {
 			fmt.Printf("'%f' is not recognised as a number.", thisWallHeight)
 		} else {
 			thisSA := thisWallHeight * thisWallWidth
+			dimensions = append(dimensions, []float64{thisWallHeight, thisWallWidth})
 			walls = append(walls, thisSA)
 			i++
 		}
 	}
-	return walls
+	return walls, dimensions
 }
