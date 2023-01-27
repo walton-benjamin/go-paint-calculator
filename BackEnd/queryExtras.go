@@ -53,7 +53,7 @@ func QueryExtras() [][]string {
 
 				//check if item name entered is found in the available products, through one of two ways
 				//but first check if it was a mistake
-				if strings.EqualFold(itemInString, "c") || strings.EqualFold(itemInString, "x") || strings.EqualFold(itemInString, "cancel") {
+				if strings.EqualFold(itemInString, "c") || strings.EqualFold(itemInString, "x") || strings.EqualFold(itemInString, "exit") || strings.EqualFold(itemInString, "cancel") {
 					//if they don't want to add another item
 					fmt.Printf("Attempting to break out of loop\n \n")
 					break
