@@ -11,7 +11,7 @@ import (
 func QueryExtras() [][]string {
 
 	fmt.Printf("\n\n Would you like any extras added to your order? \n   Items in stock : \n")
-	extrasOrdered := [][]string{{}}
+	extrasOrdered := [][]string{}
 	extras := GetExtras()
 	//displaying items available
 	if len(extras) > 0 {
@@ -27,7 +27,7 @@ func QueryExtras() [][]string {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for moreOrders {
-		fmt.Printf("Would you like to add any items to your order? [Y/N] :")
+		fmt.Printf("Would you like to add any additional items to your order? [Y/N] :")
 		thisItem := []string{}
 
 		//get their decision to order more or not
@@ -54,12 +54,10 @@ func QueryExtras() [][]string {
 
 					//if they are using #x notation correctly...
 					fmt.Printf("Inspecting item number %s\n", itemInString[1:])
-					//#2
-					//inString := fmt.Sprintf("%s", itemInString[1:]) //, "", len(itemInString))), strings.Split(itemInString, "#
+					//in : #2
 					inString, err := strconv.ParseInt(itemInString[1:], 10, 64)
-					fmt.Println(inString, err)
-					//2
-					//inputItemNumber, err2 := strconv.ParseInt(inString, 10, 64)
+					fmt.Println(inString)
+					//out : 2
 
 					if err == nil {
 						//int accepted
@@ -88,10 +86,14 @@ func QueryExtras() [][]string {
 					}
 				}
 			}
+			//item found, thisItem[0]&[1] are filled with the selected item info.
+			//now get the quantity to order with getQuantity(item)
+
 			//var thisQuant []string = []string{fmt.Sprintf("%f")}
-			fmt.Println(thisItem[0])
-			thisItem = append(thisItem, getQuantity(thisItem[0]))
-			extrasOrdered = append(extrasOrdered, thisQuant)
+			fmt.Println(thisItem, thisItem[0])
+			//append the result of getQuantity
+			thisItem = append(thisItem, fmt.Sprintf("%.0f", getQuantity(thisItem[0])))
+			extrasOrdered = append(extrasOrdered, thisItem)
 			moreOrders = true
 
 			//if the user does not want to order other items
@@ -119,12 +121,12 @@ func GetExtras() [][]string {
 	}
 }
 
-func getQuantity(thisItem string) float64 {
+func getQuantity(thisItemName string) float64 {
 	validInput := false
 	scanner := bufio.NewScanner(os.Stdin)
 	var numberToOrder float64
-	for validInput {
-		fmt.Printf("How many '%ss' would you like to order? : ", thisItem)
+	for !validInput {
+		fmt.Printf("How many '%ss' would you like to order? : ", thisItemName)
 		scanner.Scan()
 		inString := scanner.Text()
 		numberOrdered, err := strconv.ParseFloat(inString, 64)
@@ -132,6 +134,7 @@ func getQuantity(thisItem string) float64 {
 			fmt.Println("Sorry, that wasn't a valid number to order. Try again...")
 		} else {
 			numberToOrder = numberOrdered
+			fmt.Printf("Adding %.0f x %ss to your order....\n \n", numberToOrder, thisItemName)
 			validInput = true
 		}
 	}
