@@ -27,8 +27,8 @@ func QueryExtras() [][]string {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for moreOrders {
-		fmt.Printf("Would you like to add any additional items to your order? [Y/N] :")
-		thisItem := []string{}
+		fmt.Printf("\nWould you like to add any additional items to your order? [Y/N] :")
+		//thisItem := []string{}
 
 		//get their decision to order more or not
 		scanner.Scan()
@@ -36,6 +36,7 @@ func QueryExtras() [][]string {
 
 		//check user input
 		if strings.ToUpper(textIn) == "Y" || strings.ToUpper(textIn) == "YES" {
+			displayCurrentExtras(extrasOrdered)
 			//if they want to order more items, query the item
 			fmt.Println("\nPlease enter the full name of the item as it appears, or '#' Hashtag, and then the number in the list")
 			fmt.Println("If you would like to see the items again, enter 'i', or 'items'.")
@@ -46,12 +47,20 @@ func QueryExtras() [][]string {
 			for !validExtraName {
 
 				//ask for a new attempt to enter a correct name
-				fmt.Println("Which item would you like to order? : ")
+				fmt.Println("\nWhich item would you like to order? : ")
 				scanner.Scan()
 				itemInString := scanner.Text()
 
 				//check if item name entered is found in the available products, through one of two ways
-				if strings.Contains(itemInString, "#") {
+				//but first check if it was a mistake
+				if strings.EqualFold(itemInString, "c") || strings.EqualFold(itemInString, "x") || strings.EqualFold(itemInString, "cancel") {
+					//if they don't want to add another item
+					fmt.Printf("Attempting to break out of loop\n \n")
+					break
+				} else if strings.EqualFold(itemInString, "I") || strings.EqualFold(itemInString, "Item") || strings.EqualFold(textIn, "Items") {
+					displayExtras(extras)
+					//check using #x notation
+				} else if strings.Contains(itemInString, "#") {
 
 					//if they are using #x notation correctly...
 					//fmt.Printf("Inspecting item number %s\n", itemInString[1:])
@@ -62,9 +71,12 @@ func QueryExtras() [][]string {
 
 					if err == nil {
 						//int accepted
-						thisItem = extras[(inString - 1)]
-						fmt.Printf("Selected Item '%s'\n", thisItem[0])
+						thisItem := extras[(inString - 1)]
+						//fmt.Printf("Selected Item '%s'\n", thisItem[0])
 						validExtraName = true
+						thisItem = append(thisItem, fmt.Sprintf("%.0f", getQuantity(thisItem[0])))
+						extrasOrdered = append(extrasOrdered, thisItem)
+						moreOrders = true
 					} else {
 						fmt.Println("An error occurred. Attempt to recognise #x notation failed. Try again")
 					}
@@ -77,31 +89,37 @@ func QueryExtras() [][]string {
 						//check if the item name, and input are identical
 						if strings.EqualFold(itemInString, item[0]) {
 							//if so, set the item being ordered to this item, tell the user, set flag
-							thisItem = item
+							thisItem := item
 							fmt.Printf("Selected %s\n", thisItem[0])
 							validExtraName = true
+							thisItem = append(thisItem, fmt.Sprintf("%.0f", getQuantity(thisItem[0])))
+							extrasOrdered = append(extrasOrdered, thisItem)
+							moreOrders = true
 						}
 					}
 					if !validExtraName {
 						fmt.Println("Sorry, that was not recognised. Please make sure you enter the name exactly as it appears and try again...")
 					}
+
 				}
 			}
 			//item found, thisItem[0]&[1] are filled with the selected item info.
 			//now get the quantity to order with getQuantity(item)
 
 			//append the result of getQuantity
-			thisItem = append(thisItem, fmt.Sprintf("%.0f", getQuantity(thisItem[0])))
-			extrasOrdered = append(extrasOrdered, thisItem)
-			moreOrders = true
+
+			/*
+				thisItem = append(thisItem, fmt.Sprintf("%.0f", getQuantity(thisItem[0])))
+				extrasOrdered = append(extrasOrdered, thisItem)
+				moreOrders = true
+			*/
 
 			//if the user does not want to order other items
 		} else if strings.ToUpper(textIn) == "N" || strings.ToUpper(textIn) == "NO" {
 
 			//stop looping
 			moreOrders = false
-		} else if strings.ToUpper(textIn) == "I" || strings.ToUpper(textIn) == "Item" || strings.ToUpper(textIn) == "Items" {
-			displayExtras(extras)
+
 		} else {
 			//unaccepted inputs
 			fmt.Printf("Sorry, that was not recognised as 'Y' or 'N'. Try again : ")
@@ -128,6 +146,22 @@ func displayExtras(extras [][]string) {
 			fmt.Printf(" %d. %s , £%s per item \n", i+1, thisSlice[0], thisSlice[1])
 		}
 	}
+}
+func displayCurrentExtras(extrasOrdered [][]string) {
+	if len(extrasOrdered) > 0 {
+		currentTotal := 0.0
+		fmt.Printf("Current Order : \n")
+		for _, item := range extrasOrdered {
+			fmt.Printf("   %s x %s , £%s per item ", item[2], item[0], item[1])
+			thisQuantity, _ := strconv.ParseFloat(item[2], 64)
+			thisPrice, _ := strconv.ParseFloat(item[1], 64)
+			currentTotal += (thisPrice * thisQuantity)
+			fmt.Printf("= £%.2f\n", (thisQuantity * thisPrice))
+		}
+		fmt.Printf("\n   Current Total = £ %.2f \n", currentTotal)
+
+	}
+
 }
 
 func getQuantity(thisItemName string) float64 {
