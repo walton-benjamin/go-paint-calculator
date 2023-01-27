@@ -30,13 +30,13 @@ func runProgram() {
 	//get the number of walls to paint
 	//get the total surface area of wall to be painted
 
-	fmt.Printf("Please enter a name for this room : ")
+	//fmt.Printf("Please enter a name for this room : ")
 	/*
 		scanner = bufio.NewScanner(os.stdin)
 		scanner.Scan()
 		input := scanner.Text()
 	*/
-	var roomWalls []float64
+	var roomWalls = []float64{0.0}
 	var roomDimensions [][]float64
 	for roomWalls[0] == 0.0 {
 		roomWalls, roomDimensions = b.WallAreaCalculator()
@@ -153,7 +153,7 @@ func printReceipt(roomWalls []float64, roomDimensions [][]float64, chosenPaint s
 		//if wall dimensions used
 		for i := 0; i < len(roomWalls); i++ {
 			thisRoomsDimensions := roomDimensions[i]
-			thisWall := fmt.Sprintf("|     Wall %d : %.2f x %.2f = %.2fm^2 ", i+1, thisRoomsDimensions[0], thisRoomsDimensions[1], roomWalls[i])
+			thisWall := fmt.Sprintf("|     Wall %d : %.2fm x %.2fm = %.2fm^2 ", i+1, thisRoomsDimensions[0], thisRoomsDimensions[1], roomWalls[i])
 			thisWallString := pagifyString(thisWall)
 			fmt.Println(thisWallString)
 		}
@@ -222,9 +222,9 @@ func printReceipt(roomWalls []float64, roomDimensions [][]float64, chosenPaint s
 	fmt.Printf("|   Total :                                                |\n")
 	fmt.Println(pagifyStringRight(fmt.Sprintf("       £%.2f   ", subTotal)))
 	fmt.Printf("|                                                          |\n")
+	fmt.Printf("+----------------------------------------------------------+\n")
 	fmt.Printf("|                                                          |\n")
 	fmt.Printf("|                Thank you for your order!                 |\n")
-	fmt.Printf("|                                                          |\n")
 	fmt.Printf("++                                                        ++\n")
 	fmt.Printf(" ++------------------------------------------------------++ \n")
 }
