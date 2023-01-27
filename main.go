@@ -208,7 +208,7 @@ func printReceipt(roomWalls []float64, roomDimensions [][]float64, chosenPaint s
 			thisItemCost, _ := strconv.ParseFloat(thisSlice[2], 64)
 			thisQuantity, _ := strconv.ParseFloat(thisSlice[1], 64)
 			thisTotal := thisItemCost * thisQuantity
-			fmt.Println(pagifyString(fmt.Sprintf("|       %.0f * %.2f ", thisQuantity, thisItemCost)))
+			fmt.Println(pagifyString(fmt.Sprintf("|       %.0f * %.2f ", thisItemCost, thisQuantity)))
 			fmt.Println(pagifyStringRight(fmt.Sprintf("  = £ %.2f   ", thisTotal)))
 			subTotal += thisTotal
 			//fmt.Printf("|                                                          |\n")

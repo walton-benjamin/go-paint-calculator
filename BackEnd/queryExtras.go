@@ -74,8 +74,16 @@ func QueryExtras() [][]string {
 						thisItem := extras[(inString - 1)]
 						//fmt.Printf("Selected Item '%s'\n", thisItem[0])
 						validExtraName = true
-						thisItem = append(thisItem, fmt.Sprintf("%.0f", getQuantity(thisItem[0])))
-						extrasOrdered = append(extrasOrdered, thisItem)
+
+						quantity := getQuantity(thisItem[0])
+						//fmt.Printf("TEST : %f quantity received\n", quantity)
+						if quantity != 0.0 {
+							//fmt.Printf("TEST : recognised not being 0 quantity \n")
+							thisItem = append(thisItem, fmt.Sprintf("%.0f", quantity))
+							extrasOrdered = append(extrasOrdered, thisItem)
+						} else {
+							fmt.Printf("Quantity '0' entered, item not added to order\n")
+						}
 						moreOrders = true
 					} else {
 						fmt.Println("An error occurred. Attempt to recognise #x notation failed. Try again")
@@ -92,8 +100,15 @@ func QueryExtras() [][]string {
 							thisItem := item
 							fmt.Printf("Selected %s\n", thisItem[0])
 							validExtraName = true
-							thisItem = append(thisItem, fmt.Sprintf("%.0f", getQuantity(thisItem[0])))
-							extrasOrdered = append(extrasOrdered, thisItem)
+							quantity := getQuantity(thisItem[0])
+							//fmt.Printf("TEST : %f quantity received\n", quantity)
+							if quantity != 0.0 {
+								//fmt.Printf("TEST : recognised not being 0 quantity \n")
+								thisItem = append(thisItem, fmt.Sprintf("%.0f", quantity))
+								extrasOrdered = append(extrasOrdered, thisItem)
+							} else {
+								fmt.Printf("Quantity '0' entered. Item not added to order\n")
+							}
 							moreOrders = true
 						}
 					}
@@ -158,7 +173,7 @@ func displayCurrentExtras(extrasOrdered [][]string) {
 			currentTotal += (thisPrice * thisQuantity)
 			fmt.Printf("= £%.2f\n", (thisQuantity * thisPrice))
 		}
-		fmt.Printf("\n   Current Total = £ %.2f \n", currentTotal)
+		fmt.Printf("\n   Current Total = £ %.2f \n\n", currentTotal)
 
 	}
 
