@@ -13,6 +13,7 @@ import (
 TODO:
 accept multiple rooms, add all to receipts
 */
+//test commit
 
 func main() {
 	fmt.Printf("\nWelcome to the Wall Painting Calculator \n\n")
